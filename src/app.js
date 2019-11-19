@@ -4,6 +4,8 @@ class App extends React.Component {
     this.state = {
       options: ["Ir a praia", "Estudar React", "Fazer nada 2", "Assistir Naruto"]
     }
+    // Need to bind the context in deleteAllOptions
+    this.deleteAllOptions = this.deleteAllOptions.bind(this);
   }
 
   deleteAllOptions() {
@@ -56,23 +58,11 @@ class Action extends React.Component {
 }
 
 class Options extends React.Component {
-  constructor(props) {
-    super(props);
-    //Feito para que seja inferido o contexto dentro do método removeAll.
-    this.removeAll = this.removeAll.bind(this);
-  }
-
-  removeAll() {
-    alert('removed')
-    this.props.options = [];
-    render();
-  }
-
   render() {
  
     return (
       <div>
-      <button onClick={this.removeAll}>Remove All</button>
+      <button onClick={this.props.deleteAllOptions}>Remove All</button>
         <ol>
           {this.props.options.map(element => {
             return <Option key={element} optionText={element}/>

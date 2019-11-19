@@ -10,9 +10,9 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
@@ -31,7 +31,9 @@ function (_React$Component) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(App).call(this, props));
     _this.state = {
       options: ["Ir a praia", "Estudar React", "Fazer nada 2", "Assistir Naruto"]
-    };
+    }; // Need to bind the context in deleteAllOptions
+
+    _this.deleteAllOptions = _this.deleteAllOptions.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -113,29 +115,17 @@ var Options =
 function (_React$Component4) {
   _inherits(Options, _React$Component4);
 
-  function Options(props) {
-    var _this2;
-
+  function Options() {
     _classCallCheck(this, Options);
 
-    _this2 = _possibleConstructorReturn(this, _getPrototypeOf(Options).call(this, props)); //Feito para que seja inferido o contexto dentro do método removeAll.
-
-    _this2.removeAll = _this2.removeAll.bind(_assertThisInitialized(_this2));
-    return _this2;
+    return _possibleConstructorReturn(this, _getPrototypeOf(Options).apply(this, arguments));
   }
 
   _createClass(Options, [{
-    key: "removeAll",
-    value: function removeAll() {
-      alert('removed');
-      this.props.options = [];
-      render();
-    }
-  }, {
     key: "render",
     value: function render() {
       return React.createElement("div", null, React.createElement("button", {
-        onClick: this.removeAll
+        onClick: this.props.deleteAllOptions
       }, "Remove All"), React.createElement("ol", null, this.props.options.map(function (element) {
         return React.createElement(Option, {
           key: element,
