@@ -4,8 +4,9 @@ class App extends React.Component {
     this.state = {
       options: ["Ir a praia", "Estudar React", "Fazer nada 2", "Assistir Naruto"]
     }
-    // Need to bind the context in deleteAllOptions
+    // Need to bind the context in all Methods
     this.deleteAllOptions = this.deleteAllOptions.bind(this);
+    this.handlePick = this.handlePick.bind(this);
   }
 
   deleteAllOptions() {
@@ -15,6 +16,12 @@ class App extends React.Component {
       }
     });
   }
+
+  handlePick() {
+    const randNum = Math.floor(Math.random() * this.state.options.length);
+    alert(this.state.options[randNum]);
+  }
+
 render() {
   const title = "First React App";
   const subitle = "React is easier than Angular.";
@@ -22,12 +29,15 @@ render() {
   return (
    <div>
     <Header title={title} subitle={subitle}/>
-    <Action hasOptions={this.state.options.length > 0}/>
+    <Action 
+      hasOptions={this.state.options.length > 0}
+      handlePick={this.handlePick}
+    />
     <Options 
       options={this.state.options}
       deleteAllOptions={this.deleteAllOptions}
     />
-    <AddOption/>
+    <AddOption options={this.state.options}/>
    </div>
   );
 }
@@ -51,7 +61,10 @@ class Action extends React.Component {
   render() {
     return (
       <div>
-        <button disabled={!this.props.hasOptions}>What should I do?</button>
+        <button 
+        disabled={!this.props.hasOptions}
+        onClick={this.props.handlePick}
+        >What should I do?</button>
       </div>
     ) 
   }
@@ -59,7 +72,6 @@ class Action extends React.Component {
 
 class Options extends React.Component {
   render() {
- 
     return (
       <div>
       <button onClick={this.props.deleteAllOptions}>Remove All</button>
@@ -83,12 +95,16 @@ class Option extends React.Component {
 
 
 class AddOption extends React.Component {
+  constructor(props) {
+    super(props);
+    this.onSubmit = this.onSubmit.bind(this);
+  }
   onSubmit(e) {
     e.preventDefault();
 
     const option = e.target.elements.option.value.trim();
     if(option) {
-      alert(option);
+      this.props.options.push(option);
     }
     
   }

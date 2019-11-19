@@ -31,9 +31,10 @@ function (_React$Component) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(App).call(this, props));
     _this.state = {
       options: ["Ir a praia", "Estudar React", "Fazer nada 2", "Assistir Naruto"]
-    }; // Need to bind the context in deleteAllOptions
+    }; // Need to bind the context in all Methods
 
     _this.deleteAllOptions = _this.deleteAllOptions.bind(_assertThisInitialized(_this));
+    _this.handlePick = _this.handlePick.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -47,6 +48,12 @@ function (_React$Component) {
       });
     }
   }, {
+    key: "handlePick",
+    value: function handlePick() {
+      var randNum = Math.floor(Math.random() * this.state.options.length);
+      alert(this.state.options[randNum]);
+    }
+  }, {
     key: "render",
     value: function render() {
       var title = "First React App";
@@ -55,11 +62,14 @@ function (_React$Component) {
         title: title,
         subitle: subitle
       }), React.createElement(Action, {
-        hasOptions: this.state.options.length > 0
+        hasOptions: this.state.options.length > 0,
+        handlePick: this.handlePick
       }), React.createElement(Options, {
         options: this.state.options,
         deleteAllOptions: this.deleteAllOptions
-      }), React.createElement(AddOption, null));
+      }), React.createElement(AddOption, {
+        options: this.state.options
+      }));
     }
   }]);
 
@@ -102,7 +112,8 @@ function (_React$Component3) {
     key: "render",
     value: function render() {
       return React.createElement("div", null, React.createElement("button", {
-        disabled: !this.props.hasOptions
+        disabled: !this.props.hasOptions,
+        onClick: this.props.handlePick
       }, "What should I do?"));
     }
   }]);
@@ -164,10 +175,14 @@ var AddOption =
 function (_React$Component6) {
   _inherits(AddOption, _React$Component6);
 
-  function AddOption() {
+  function AddOption(props) {
+    var _this2;
+
     _classCallCheck(this, AddOption);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(AddOption).apply(this, arguments));
+    _this2 = _possibleConstructorReturn(this, _getPrototypeOf(AddOption).call(this, props));
+    _this2.onSubmit = _this2.onSubmit.bind(_assertThisInitialized(_this2));
+    return _this2;
   }
 
   _createClass(AddOption, [{
@@ -177,7 +192,7 @@ function (_React$Component6) {
       var option = e.target.elements.option.value.trim();
 
       if (option) {
-        alert(option);
+        this.props.options.push(option);
       }
     }
   }, {
