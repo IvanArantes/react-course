@@ -23,16 +23,41 @@ var App =
 function (_React$Component) {
   _inherits(App, _React$Component);
 
-  function App() {
+  function App(props) {
+    var _this;
+
     _classCallCheck(this, App);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(App).apply(this, arguments));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(App).call(this, props));
+    _this.state = {
+      options: ["Ir a praia", "Estudar React", "Fazer nada 2", "Assistir Naruto"]
+    };
+    return _this;
   }
 
   _createClass(App, [{
+    key: "deleteAllOptions",
+    value: function deleteAllOptions() {
+      this.setState(function () {
+        return {
+          options: []
+        };
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
-      return React.createElement("div", null, React.createElement(Header, null), React.createElement(Action, null), React.createElement(Options, null), React.createElement(AddOption, null));
+      var title = "First React App";
+      var subitle = "React is easier than Angular.";
+      return React.createElement("div", null, React.createElement(Header, {
+        title: title,
+        subitle: subitle
+      }), React.createElement(Action, {
+        hasOptions: this.state.options.length > 0
+      }), React.createElement(Options, {
+        options: this.state.options,
+        deleteAllOptions: this.deleteAllOptions
+      }), React.createElement(AddOption, null));
     }
   }]);
 
@@ -53,7 +78,7 @@ function (_React$Component2) {
   _createClass(Header, [{
     key: "render",
     value: function render() {
-      return React.createElement("p", null, "This is header.");
+      return React.createElement("div", null, React.createElement("h1", null, "This is ", this.props.title, "."), React.createElement("h3", null, this.props.subtitle));
     }
   }]);
 
@@ -74,7 +99,9 @@ function (_React$Component3) {
   _createClass(Action, [{
     key: "render",
     value: function render() {
-      return React.createElement("div", null, React.createElement("button", null, "What should I do?"));
+      return React.createElement("div", null, React.createElement("button", {
+        disabled: !this.props.hasOptions
+      }, "What should I do?"));
     }
   }]);
 
@@ -86,16 +113,35 @@ var Options =
 function (_React$Component4) {
   _inherits(Options, _React$Component4);
 
-  function Options() {
+  function Options(props) {
+    var _this2;
+
     _classCallCheck(this, Options);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(Options).apply(this, arguments));
+    _this2 = _possibleConstructorReturn(this, _getPrototypeOf(Options).call(this, props)); //Feito para que seja inferido o contexto dentro do método removeAll.
+
+    _this2.removeAll = _this2.removeAll.bind(_assertThisInitialized(_this2));
+    return _this2;
   }
 
   _createClass(Options, [{
+    key: "removeAll",
+    value: function removeAll() {
+      alert('removed');
+      this.props.options = [];
+      render();
+    }
+  }, {
     key: "render",
     value: function render() {
-      return React.createElement("div", null, "Options:", React.createElement(Option, null));
+      return React.createElement("div", null, React.createElement("button", {
+        onClick: this.removeAll
+      }, "Remove All"), React.createElement("ol", null, this.props.options.map(function (element) {
+        return React.createElement(Option, {
+          key: element,
+          optionText: element
+        });
+      })));
     }
   }]);
 
@@ -116,7 +162,7 @@ function (_React$Component5) {
   _createClass(Option, [{
     key: "render",
     value: function render() {
-      return React.createElement("div", null, "Option1");
+      return React.createElement("li", null, this.props.optionText);
     }
   }]);
 
@@ -135,9 +181,24 @@ function (_React$Component6) {
   }
 
   _createClass(AddOption, [{
+    key: "onSubmit",
+    value: function onSubmit(e) {
+      e.preventDefault();
+      var option = e.target.elements.option.value.trim();
+
+      if (option) {
+        alert(option);
+      }
+    }
+  }, {
     key: "render",
     value: function render() {
-      return React.createElement("div", null, "AddOption");
+      return React.createElement("div", null, React.createElement("form", {
+        onSubmit: this.onSubmit
+      }, React.createElement("input", {
+        type: "text",
+        name: "option"
+      }), React.createElement("button", null, "Add Option")));
     }
   }]);
 
