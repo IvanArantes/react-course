@@ -35,6 +35,7 @@ function (_React$Component) {
 
     _this.deleteAllOptions = _this.deleteAllOptions.bind(_assertThisInitialized(_this));
     _this.handlePick = _this.handlePick.bind(_assertThisInitialized(_this));
+    _this.handleAddOption = _this.handleAddOption.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -54,6 +55,21 @@ function (_React$Component) {
       alert(this.state.options[randNum]);
     }
   }, {
+    key: "handleAddOption",
+    value: function handleAddOption(option) {
+      if (!option) {
+        return 'Enter valid value';
+      } else if (this.state.options.indexOf(option) > -1) {
+        return 'This option already exists';
+      }
+
+      this.setState(function (prevState) {
+        return {
+          options: prevState.options.concat([option])
+        };
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
       var title = "First React App";
@@ -68,7 +84,8 @@ function (_React$Component) {
         options: this.state.options,
         deleteAllOptions: this.deleteAllOptions
       }), React.createElement(AddOption, {
-        options: this.state.options
+        options: this.state.options,
+        handleAddOption: this.handleAddOption
       }));
     }
   }]);
@@ -182,6 +199,9 @@ function (_React$Component6) {
 
     _this2 = _possibleConstructorReturn(this, _getPrototypeOf(AddOption).call(this, props));
     _this2.onSubmit = _this2.onSubmit.bind(_assertThisInitialized(_this2));
+    _this2.state = {
+      error: undefined
+    };
     return _this2;
   }
 
@@ -190,15 +210,17 @@ function (_React$Component6) {
     value: function onSubmit(e) {
       e.preventDefault();
       var option = e.target.elements.option.value.trim();
-
-      if (option) {
-        this.props.options.push(option);
-      }
+      var error = this.props.handleAddOption(option);
+      this.setState(function () {
+        return {
+          error: error
+        };
+      });
     }
   }, {
     key: "render",
     value: function render() {
-      return React.createElement("div", null, React.createElement("form", {
+      return React.createElement("div", null, this.state.error && React.createElement("p", null, this.state.error), React.createElement("form", {
         onSubmit: this.onSubmit
       }, React.createElement("input", {
         type: "text",

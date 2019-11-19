@@ -7,6 +7,7 @@ class App extends React.Component {
     // Need to bind the context in all Methods
     this.deleteAllOptions = this.deleteAllOptions.bind(this);
     this.handlePick = this.handlePick.bind(this);
+    this.handleAddOption = this.handleAddOption.bind(this);
   }
 
   deleteAllOptions() {
@@ -20,6 +21,21 @@ class App extends React.Component {
   handlePick() {
     const randNum = Math.floor(Math.random() * this.state.options.length);
     alert(this.state.options[randNum]);
+  }
+
+  handleAddOption(option) {
+    if(!option) {
+      return 'Enter valid value';
+    } else if (this.state.options.indexOf(option) > -1) {
+      return 'This option already exists';
+    }
+
+    this.setState((prevState) => {
+      return {
+        options : prevState.options.concat([option])
+      }
+    });
+    
   }
 
 render() {
@@ -37,7 +53,10 @@ render() {
       options={this.state.options}
       deleteAllOptions={this.deleteAllOptions}
     />
-    <AddOption options={this.state.options}/>
+    <AddOption 
+      options={this.state.options}
+      handleAddOption={this.handleAddOption}  
+    />
    </div>
   );
 }
@@ -98,19 +117,26 @@ class AddOption extends React.Component {
   constructor(props) {
     super(props);
     this.onSubmit = this.onSubmit.bind(this);
+    this.state = {
+      error: undefined
+    }
   }
   onSubmit(e) {
     e.preventDefault();
 
     const option = e.target.elements.option.value.trim();
-    if(option) {
-      this.props.options.push(option);
-    }
+    
+    const error = this.props.handleAddOption(option);
+    this.setState(() => {
+      return { error }
+    });
+    
     
   }
   render() {
     return (
       <div>
+      {this.state.error && <p>{this.state.error}</p>}
         <form onSubmit={this.onSubmit}>
           <input type="text" name="option"/>
           <button>Add Option</button>
