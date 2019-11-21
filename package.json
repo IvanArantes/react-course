@@ -4,9 +4,20 @@
   "main": "index.js",
   "author": "Ivan Arantes",
   "license": "MIT",
+  "scripts": {
+    "serve": "live-server public/",
+    "build": "webpack --watch",
+    "build-babel": "babel src/app.js --out-file=public/scripts/app.js --presets @babel/preset-env,@babel/preset-react --watch"
+  },
   "dependencies": {
-    "@babel/core": "^7.7.2",
-    "@babel/preset-env": "^7.7.1",
-    "@babel/preset-react": "^7.7.0"
+    "@babel/cli": "7.7.0",
+    "@babel/core": "7.7.2",
+    "@babel/preset-env": "7.7.1",
+    "@babel/preset-react": "7.7.0",
+    "live-server": "1.2.1",
+    "webpack": "4.41.2"
+  },
+  "devDependencies": {
+    "webpack-cli": "^3.3.10"
   }
 }
