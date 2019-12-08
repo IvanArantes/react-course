@@ -1,0 +1,19 @@
+.header {
+    background: #20222b;
+    margin-bottom: 5.0rem;
+    padding: 1.6rem 0;
+    color: white;
+}
+
+//BEM block element modfier
+.header__title {
+    font-size: 3.2rem;
+    margin:0;
+}
+
+.header__subtitle {
+    color: #a5afd7;
+    font-size: 1.8rem;
+    font-weight: 500;
+    margin: 0;
+}
